@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
+import React, { Suspense, lazy } from 'react';
 
-function App() {
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { AuthProvider } from './context/Auth';
+import PrivateRoute from './PrivateRoute';
+
+const Chat = lazy(() => import('./components/Chat'));
+const Login = lazy(() => import('./components/Login'));
+const SignUp = lazy(() => import('./components/SignUp'));
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+            <PrivateRoute exact path="/" component={Chat} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={SignUp} />
+          </Switch>
+        </Suspense>
+      </Router>
+    </AuthProvider>
   );
-}
+};
 
 export default App;
