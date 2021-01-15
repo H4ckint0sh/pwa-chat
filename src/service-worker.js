@@ -9,16 +9,23 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
-import { clientsClaim } from "workbox-core";
-import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
-import { registerRoute } from "workbox-routing";
+import { clientsClaim } from 'workbox-core';
+import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
+import { registerRoute } from 'workbox-routing';
 import {
   pageCache,
   imageCache,
   staticResourceCache,
   googleFontsCache,
   offlineFallback,
-} from "workbox-recipes";
+} from 'workbox-recipes';
+
+// importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js');
+// importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js');
+// firebase.initializeApp({
+//   messagingSenderId: '194265597758',
+// });
+// console.log(firebase.messaging());
 
 clientsClaim();
 
@@ -38,16 +45,16 @@ offlineFallback();
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at
 // https://developers.google.com/web/fundamentals/architecture/app-shell
-const fileExtensionRegexp = new RegExp("/[^/?]+\\.[^/]+$");
+const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
 registerRoute(
   // Return false to exempt requests from being fulfilled by index.html.
   ({ request, url }) => {
     // If this isn't a navigation, skip.
-    if (request.mode !== "navigate") {
+    if (request.mode !== 'navigate') {
       return false;
     } // If this is a URL that starts with /_, skip.
 
-    if (url.pathname.startsWith("/_")) {
+    if (url.pathname.startsWith('/_')) {
       return false;
     } // If this looks like a URL for a resource, because it contains // a file extension, skip.
 
@@ -62,8 +69,8 @@ registerRoute(
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
-self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });
